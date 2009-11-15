@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 project(luacmake)
 
 # module path
-SET(luacmake_CMAKE_DIR "${ggserver_SOURCE_DIR}/etc/cmake")
+SET(luacmake_CMAKE_DIR "${luacmake_SOURCE_DIR}/etc/cmake")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${luacmake_CMAKE_DIR}")
 
 if(${WITH_LUAJIT} EQUAL "1")
@@ -33,6 +33,9 @@ endif(NOT CMAKE_BUILD_TYPE)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../lib)
+
+find_package(PCRE REQUIRED)
+include_directories(${PCRE_INCLUDE_DIR})
 
 
 if(${WITH_LUAJIT} EQUAL "1")
