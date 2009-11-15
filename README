@@ -1,0 +1,5 @@
+lua-cmake-source
+=======================
+cmake files for lua, luajit and modules. Modes:
+ * compile lua with modules as c++
+ * build on x86 with luajit
