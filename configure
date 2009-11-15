@@ -1,0 +1,92 @@
+#!/usr/bin/env sh
+
+# based on nvidia-texture-tools make files
+
+# Make sure cmake is available.
+if command -v cmake >/dev/null 2>&1;
+then
+	CMAKE=cmake
+else
+	echo "Error - cmake is not available!"
+	exit 2
+fi
+
+
+help=false
+build="RelWithDebInfo" # release
+prefix=/opt/server
+install_rpath="./;./lib;/opt/server/bin"
+concurency=4
+withluacpp=0
+withluajit=0
+
+# Parse the args
+for i in "$@"
+do
+	case $i in
+		--help )              help=true ;;
+		--debug )             build="Debug" ;;
+		--release )           build="Release" ;;
+		--reldebinfo)         build="RelWithDebInfo" ;;
+		--prefix=* )          prefix="${i#--prefix=}" ;;
+		--rpath=* )           install_rpath="${i#--install_rpath=}" ;;
+		-j* )                 concurency="${i#-j}" ;;
+		--with-luajit )       withluajit=1 ;;
+		--with-lua-as-cpp)    withluacpp=1 ;;
+		--without-luajit )    withluajit=0 ;;
+		--without-lua-as-cpp) withluacpp=0 ;;
+		* )                echo "Unrecognised argument $i" ;;
+	esac
+done
+
+if [ "$help" = "true" ]
+then
+	echo
+	echo "--help                 Show this message."
+	echo "--debug                Configure debug build."
+	echo "--release              Configure release build."
+	echo "--reldebinfo           Configure release build with debug info (default)."
+	echo "--prefix=path          Installation prefix."
+	echo "--rpath=path           Installation RPATH."
+	echo "-jLEVEL                Set concurency level."
+	echo "--with-luajit          Build with luajit"
+	echo "--with-lua-as-cpp      Build with lua as c++ (ignored if --with-luajit selected)"
+	echo "--without-luajit       Build without luajit"
+	echo "--without-lua-as-cpp   Build with lua as c"
+	echo
+	exit 0
+fi
+
+echo "-- Configuring project"
+
+echo "--   Default build type : $build"
+echo "--   Prefix             : $prefix"
+echo "--   RPATH              : $install_rpath"
+echo "--   Concurency         : $concurency"
+echo "--   With lua as c++    : $withluacpp"
+echo "--   With luajit        : $withluajit"
+
+mkdir -p ./build
+cd ./build
+$CMAKE .. -DCMAKE_BUILD_TYPE=$build -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_RPATH=$install_rpath -DWITH_LUAJIT=$withluajit -DWITH_LUACPP=$withluacpp -G "Unix Makefiles" || exit 1
+cd ..
+
+cat > Makefile << EOF
+all:
+	@make -j$concurency --no-print-directory -C build/
+
+depend:
+	@make depend --no-print-directory -C build/
+
+install:
+	@make install --no-print-directory -C build/
+
+clean:
+	@make clean --no-print-directory -C build/
+
+distclean:
+	@rm -Rf build/
+	@rm -f Makefile
+	@rm -Rf bin/
+	@rm -Rf lib/
+EOF
