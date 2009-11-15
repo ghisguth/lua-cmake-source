@@ -1,0 +1,5 @@
+LIBRARY lrexlib.dll
+DESCRIPTION "lrexlib"
+VERSION 1.2.1
+EXPORTS
+luaopen_rex_pcre

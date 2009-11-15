@@ -1,0 +1,3 @@
+LuaBitOp-1.0.1
+
++ extern "C" patch

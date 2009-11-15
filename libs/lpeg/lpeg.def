@@ -1,0 +1,5 @@
+LIBRARY lpeg.dll
+DESCRIPTION "LPeg"
+VERSION 0.7
+EXPORTS
+luaopen_lpeg

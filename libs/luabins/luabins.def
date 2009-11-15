@@ -1,0 +1,5 @@
+LIBRARY luabins.dll
+DESCRIPTION "luabins"
+VERSION 1.0.0
+EXPORTS
+luaopen_luabins

@@ -1,0 +1,5 @@
+LIBRARY mixlua.dll
+DESCRIPTION "MixLua"
+VERSION 0.2.7
+EXPORTS
+luaopen_mixlua

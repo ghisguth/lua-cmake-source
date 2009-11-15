@@ -1,0 +1,5 @@
+LIBRARY random.dll
+DESCRIPTION "LRandom"
+VERSION 24
+EXPORTS
+luaopen_random

@@ -1,0 +1,2 @@
+lrandom-20070628-1 from LuaRocks
+patched to be C++-friendly

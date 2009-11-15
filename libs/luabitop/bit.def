@@ -1,0 +1,5 @@
+LIBRARY bit.dll
+DESCRIPTION "Lua BitOp"
+VERSION 101
+EXPORTS
+luaopen_bit
