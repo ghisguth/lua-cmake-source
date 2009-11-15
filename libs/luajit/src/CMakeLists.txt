@@ -24,9 +24,15 @@ dobuildvm(folddef lj_folddef.h lj_opt_fold.c)
 add_definitions(-U_FORTIFY_SOURCE -fno-stack-protector -D_FILE_OFFSET_BITS=64)
 
 file(GLOB lua_files lj_*.c lib_*.c)
+
+set(ASM_FLAGS "")
+if(${ENFORCE_32_BIT} EQUAL "1")
+	set(ASM_FLAGS ${ASM_FLAGS} -m32)
+endif(${ENFORCE_32_BIT} EQUAL "1")
+
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/lj_vm.o
 	COMMAND gcc
-	ARGS -c -o ${CMAKE_CURRENT_BINARY_DIR}/lj_vm.o ${CMAKE_CURRENT_BINARY_DIR}/lj_vm.s
+	ARGS -c ${ASM_FLAGS} -o ${CMAKE_CURRENT_BINARY_DIR}/lj_vm.o ${CMAKE_CURRENT_BINARY_DIR}/lj_vm.s
 	DEPENDS buildvm ${CMAKE_CURRENT_BINARY_DIR}/lj_vm.s
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMENT "compiling lj_vm.s")

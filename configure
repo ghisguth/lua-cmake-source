@@ -19,6 +19,7 @@ install_rpath="./;./lib;/opt/server/bin"
 concurency=4
 withluacpp=0
 withluajit=0
+enforce32bit=0
 
 # Parse the args
 for i in "$@"
@@ -35,6 +36,7 @@ do
 		--with-lua-as-cpp)    withluacpp=1 ;;
 		--without-luajit )    withluajit=0 ;;
 		--without-lua-as-cpp) withluacpp=0 ;;
+		--enforce-32-bit)     enforce32bit=1 ;;
 		* )                echo "Unrecognised argument $i" ;;
 	esac
 done
@@ -53,22 +55,24 @@ then
 	echo "--with-lua-as-cpp      Build with lua as c++ (ignored if --with-luajit selected)"
 	echo "--without-luajit       Build without luajit"
 	echo "--without-lua-as-cpp   Build with lua as c"
+	echo "--enforce-32-bit       Build x86 on x86_64 platform"
 	echo
 	exit 0
 fi
 
 echo "-- Configuring project"
 
-echo "--   Default build type : $build"
-echo "--   Prefix             : $prefix"
-echo "--   RPATH              : $install_rpath"
-echo "--   Concurency         : $concurency"
-echo "--   With lua as c++    : $withluacpp"
-echo "--   With luajit        : $withluajit"
+echo "--   Default build type  : $build"
+echo "--   Prefix              : $prefix"
+echo "--   RPATH               : $install_rpath"
+echo "--   Concurency          : $concurency"
+echo "--   With lua as c++     : $withluacpp"
+echo "--   With luajit         : $withluajit"
+echo "--   Build x86 on x86_64 : $enforce32bit"
 
 mkdir -p ./build
 cd ./build
-$CMAKE .. -DCMAKE_BUILD_TYPE=$build -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_RPATH=$install_rpath -DWITH_LUAJIT=$withluajit -DWITH_LUACPP=$withluacpp -G "Unix Makefiles" || exit 1
+$CMAKE .. -DCMAKE_BUILD_TYPE=$build -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_RPATH=$install_rpath -DWITH_LUAJIT=$withluajit -DWITH_LUACPP=$withluacpp -DENFORCE_32_BIT=$enforce32bit -G "Unix Makefiles" || exit 1
 cd ..
 
 cat > Makefile << EOF
