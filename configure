@@ -36,7 +36,8 @@ do
 		--with-lua-as-cpp)    withluacpp=1 ;;
 		--without-luajit )    withluajit=0 ;;
 		--without-lua-as-cpp) withluacpp=0 ;;
-		--enforce-32-bit)     enforce32bit=1 ;;
+		--enforce-32-bit)     enforce32bit=1; enforce64bit=0; ;;
+		--enforce-64-bit)     enforce64bit=1; enforce32bit=0; ;;
 		* )                echo "Unrecognised argument $i" ;;
 	esac
 done
@@ -56,6 +57,7 @@ then
 	echo "--without-luajit       Build without luajit"
 	echo "--without-lua-as-cpp   Build with lua as c"
 	echo "--enforce-32-bit       Build x86 on x86_64 platform"
+	echo "--enforce-64-bit       Force x86_64"
 	echo
 	exit 0
 fi
@@ -69,10 +71,11 @@ echo "--   Concurency          : $concurency"
 echo "--   With lua as c++     : $withluacpp"
 echo "--   With luajit         : $withluajit"
 echo "--   Build x86 on x86_64 : $enforce32bit"
+echo "--   Force x86_64        : $enforce64bit"
 
 mkdir -p ./build
 cd ./build
-$CMAKE .. -DCMAKE_BUILD_TYPE=$build -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_RPATH=$install_rpath -DWITH_LUAJIT=$withluajit -DWITH_LUACPP=$withluacpp -DENFORCE_32_BIT=$enforce32bit -G "Unix Makefiles" || exit 1
+$CMAKE .. -DCMAKE_BUILD_TYPE=$build -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_INSTALL_RPATH=$install_rpath -DWITH_LUAJIT=$withluajit -DWITH_LUACPP=$withluacpp -DENFORCE_32_BIT=$enforce32bit -DENFORCE_64_BIT=$enforce64bit -G "Unix Makefiles" || exit 1
 cd ..
 
 cat > Makefile << EOF
