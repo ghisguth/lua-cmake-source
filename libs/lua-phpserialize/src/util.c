@@ -1,7 +1,8 @@
-/* util.c: Utility functions. Part of Lua serializiation module
- * Author: Alexander Gladysh <agladysh@gmail.com>
- * See Copyright Notice at the end of serialize.c file
- */
+/* 
+* util.c: Utility functions.
+* This file is a part of lua-phpserialize library.
+* Copyright (c) lua-phpserialize authors (see file `COPYRIGHT` for the license)
+*/
 
 #include "lua.h"
 #include "lauxlib.h"

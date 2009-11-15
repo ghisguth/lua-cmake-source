@@ -1,8 +1,8 @@
-/* lphpserialize.c: Lua serializiation module
- * Version: 1.0.0
- * Author: Alexander Gladysh <agladysh@gmail.com>
- * See Copyright Notice at the end of this file
- */
+/* 
+* lphpserialize.c: Lua support for PHP serialize()
+* This file is a part of lua-phpserialize library.
+* Copyright (c) lua-phpserialize authors (see file `COPYRIGHT` for the license)
+*/
 
 #include "lua.h"
 #include "lauxlib.h"
@@ -427,7 +427,7 @@ extern "C"
 {
 #endif
 
-LUALIB_API int luaopen_lphpserialize(lua_State * L)
+LUALIB_API int luaopen_phpserialize(lua_State * L)
 {
   int i = 0;
 
@@ -435,7 +435,7 @@ LUALIB_API int luaopen_lphpserialize(lua_State * L)
 
   lua_newtable(L);
 
-  luaL_checkstack(L, NUM_SSI, "luaopen_lphpserialize");
+  luaL_checkstack(L, NUM_SSI, "luaopen_phpserialize");
   for (i = 1; i <= NUM_SSI; ++i) /* Note string array is one-based */
   {
     lua_pushstring(L, g_SerializeStrings[i]);
@@ -450,26 +450,3 @@ LUALIB_API int luaopen_lphpserialize(lua_State * L)
 #ifdef __cplusplus
 }
 #endif
-
-/******************************************************************************
-* Copyright (C) 2008 Alexander Gladysh. All rights reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining
-* a copy of this software and associated documentation files (the
-* "Software"), to deal in the Software without restriction, including
-* without limitation the rights to use, copy, modify, merge, publish,
-* distribute, sublicense, and/or sell copies of the Software, and to
-* permit persons to whom the Software is furnished to do so, subject to
-* the following conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-******************************************************************************/
